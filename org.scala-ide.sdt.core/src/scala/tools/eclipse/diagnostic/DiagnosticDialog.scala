@@ -17,7 +17,7 @@ import org.eclipse.jdt.internal.ui.preferences.PreferencesMessages
 import org.eclipse.jdt.internal.corext.util.Messages
 
 import org.eclipse.core.runtime.IStatus
-import org.eclipse.contribution.jdt.preferences.{ WeavingStateConfigurer, WeavingStateConfigurerUI, JDTWeavingPreferences }
+//import org.eclipse.contribution.jdt.preferences.{ WeavingStateConfigurer, WeavingStateConfigurerUI, JDTWeavingPreferences }
 import org.eclipse.ui.PlatformUI
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport 
 
@@ -32,7 +32,7 @@ class DiagnosticDialog(shell: Shell) extends Dialog(shell) {
            2) "use other settings" is enabled.
   */
   
-  protected val configurer = new WeavingStateConfigurer
+//  protected val configurer = new WeavingStateConfigurer
   
   val heapSize = Runtime.getRuntime.maxMemory / (1024 * 1024)
   val recommendedHeap = 1024
@@ -152,11 +152,11 @@ class DiagnosticDialog(shell: Shell) extends Dialog(shell) {
     
     val weavingGroup = newGroup("JDT Weaving", control)    
     this.weavingButton = newCheckboxButton(weavingGroup, "Enable JDT weaving (required for Scala plugin)")
-    weavingButton.setSelection(configurer.isWeaving)
-    weavingButton.setEnabled(!configurer.isWeaving) // disable the control if weaving is already enabled
-    if (!configurer.isWeaving) {
-      new Label(weavingGroup, SWT.LEFT).setText("Note: change will take effect after workbench restart")
-    }
+//    weavingButton.setSelection(configurer.isWeaving)
+//    weavingButton.setEnabled(!configurer.isWeaving) // disable the control if weaving is already enabled
+//    if (!configurer.isWeaving) {
+//      new Label(weavingGroup, SWT.LEFT).setText("Note: change will take effect after workbench restart")
+//    }
 
     // radio buttons
     val radioGroup = newGroup("Scala JDT Settings", control)    
@@ -332,10 +332,10 @@ class DiagnosticDialog(shell: Shell) extends Dialog(shell) {
   
   override def okPressed {
     widgetDataList foreach { _.saveToStore }
-    val doEnableWeaving = weavingButton.getSelection && !configurer.isWeaving
+//    val doEnableWeaving = weavingButton.getSelection && !configurer.isWeaving
     super.okPressed
-    if (doEnableWeaving)
-      turnWeavingOn()
+//    if (doEnableWeaving)
+//      turnWeavingOn()
   }
   
   override def close: Boolean = {
@@ -345,22 +345,22 @@ class DiagnosticDialog(shell: Shell) extends Dialog(shell) {
   }
   
   def turnWeavingOn() {
-    JDTWeavingPreferences.setAskToEnableWeaving(false)
-    
-    val changeResult: IStatus = configurer.changeWeavingState(true)    
-    
-    if (changeResult.getSeverity <= IStatus.WARNING) {
-      val note = 
-        if (changeResult.getSeverity == IStatus.WARNING)
-          "\n\n(Note: weaving status changed, but there were warnings. See the error log for more details.)"
-        else ""
-      val restart = MessageDialog.openQuestion(shell, "Restart Eclipse?",
-          "Weaving will be enabled only after restarting the workbench.\n\nRestart now?" + note)
-      if (restart)
-        PlatformUI.getWorkbench.restart      
-    } else {
-      showFailureDialog(changeResult)
-    }
+//    JDTWeavingPreferences.setAskToEnableWeaving(false)
+//    
+//    val changeResult: IStatus = configurer.changeWeavingState(true)    
+//    
+//    if (changeResult.getSeverity <= IStatus.WARNING) {
+//      val note = 
+//        if (changeResult.getSeverity == IStatus.WARNING)
+//          "\n\n(Note: weaving status changed, but there were warnings. See the error log for more details.)"
+//        else ""
+//      val restart = MessageDialog.openQuestion(shell, "Restart Eclipse?",
+//          "Weaving will be enabled only after restarting the workbench.\n\nRestart now?" + note)
+//      if (restart)
+//        PlatformUI.getWorkbench.restart      
+//    } else {
+//      showFailureDialog(changeResult)
+//    }
   }  
   
   def showFailureDialog(result: IStatus) {
